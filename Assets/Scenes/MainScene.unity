@@ -299,7 +299,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165278770}
   m_BodyType: 0
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -329,8 +329,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2939cb87fdffa4d8b6f2e79d3735bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  speedLerp: 3
-  speedMove: 30
+  speedLerp: 8
+  speedMove: 5
+  forceJump: 500
+  checkOffset: {x: 0, y: -0.5}
+  checkSize: {x: 1, y: 0.02}
+  layerPlatform:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1338824556
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +438,7 @@ GameObject:
   - component: {fileID: 2096302640}
   - component: {fileID: 2096302639}
   - component: {fileID: 2096302641}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
