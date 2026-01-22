@@ -36,9 +36,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        if (CheckDown())
-            Jump(forceJump);
-
+        CheckDown();
         UpdatePosition();
     }
 
@@ -46,6 +44,19 @@ public class PlayerController : MonoBehaviour
     {
         transform.position += (Vector3)velocity * Time.deltaTime;
         velocity += Physics2D.gravity * Time.deltaTime;
+    }
+    private bool CheckDown()
+    {
+        if (velocity.y >= 0f) return false;
+
+        RaycastHit2D _hit = Physics2D.BoxCast(transform.position + (Vector3)checkOffset, checkSize, 0, Vector2.zero, 0, layerPlatform);
+        if (_hit)
+        {
+            _hit.transform.gameObject.TryGetComponent(out IJumpable _jumper);
+            _jumper?.OnAnyOtherLand(this);
+        }
+
+        return _hit;
     }
 
     public void Move()
@@ -57,17 +68,10 @@ public class PlayerController : MonoBehaviour
         velocity.x = horizontalMovement * speedMove;
     }
 
-    public void Jump(float _force)
+    public void Jump(float _force = 1)
     {
         velocity.y = 0f;
-        velocity.y += _force;
-    }
-    public bool CheckDown()
-    {
-        if (velocity.y >= 0f) return false;
-
-        RaycastHit2D _hit = Physics2D.BoxCast(transform.position + (Vector3)checkOffset, checkSize, 0, Vector2.zero, 0, layerPlatform);
-        return _hit;
+        velocity.y += _force * forceJump;
     }
 
     private void OnDrawGizmos()
