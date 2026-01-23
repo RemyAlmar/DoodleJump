@@ -16,6 +16,22 @@ public class PlatformHandler : MonoBehaviour, IJumpable
         _pc.Jump(jumpForceMultiplier);
     }
 
+    public void SetSize(Vector2 _size)
+    {
+        size = _size;
+        children.localScale = _size;
+        Coll.size = _size.Abs();
+    }
+    public void Enable()
+    {
+        Coll.enabled = true;
+        children.gameObject.SetActive(true);
+    }
+    public void Disable()
+    {
+        Coll.enabled = false;
+        children.gameObject.SetActive(false);
+    }
     private void OnValidate()
     {
         if (children != null)

@@ -2,16 +2,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     [SerializeField] private PlayerController player;
     [SerializeField] private Camera cam;
 
-    [SerializeField] private float percentScreenToScroll;
-    private float WidthCamSize => HeightCamSize * cam.aspect;
-    private float HalfWidthCamSize => WidthCamSize * .5f;
-    private float HeightCamSize => cam.orthographicSize * 2;
+    [SerializeField, Range(0, 100)] private float percentScreenToScroll;
+    public float WidthCamSize => HeightCamSize * cam.aspect;
+    public float HalfWidthCamSize => WidthCamSize * .5f;
+    public float HeightCamSize => cam.orthographicSize * 2;
 
     void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+
         if (!cam)
             cam = Camera.main;
 
@@ -47,5 +52,10 @@ public class GameManager : MonoBehaviour
         return !(player.transform.position.x > HalfWidthCamSize + cam.transform.position.x || player.transform.position.x < -HalfWidthCamSize + cam.transform.position.x);
     }
 
+    public bool IsAboveMaxHeight()
+    {
+        float _maxHeight = cam.transform.position.y + cam.orthographicSize - (percentScreenToScroll * .01f * HeightCamSize);
+        return player.transform.position.y > _maxHeight;
+    }
 
 }
